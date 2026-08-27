@@ -307,12 +307,20 @@ a{ text-decoration: none; }
 .app-card--muted{ opacity: .6; box-shadow: none; }
 .app-card__img{
   flex: 0 0 56px;
+  width: 56px;
   height: 56px;
   border-radius: 10px;
   background: linear-gradient(135deg, var(--bg-soft), #d7ecdd);
   display: flex; align-items: center; justify-content: center;
   color: var(--primary);
   font-size: 1.1rem;
+  overflow: hidden;
+}
+.app-card__img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .app-card__body{ display: flex; flex-direction: column; gap: 4px; justify-content: center; }
 .app-card__title{ font-family: var(--font-display); font-weight: 700; font-size: .85rem; color: var(--text); }
@@ -328,8 +336,8 @@ a{ text-decoration: none; }
   padding: 10px 12px;
 }
 .floating-card--week{
-  top: 14%;
-  left: -14%;
+  top: -7%;
+  left: -12%;
   width: 150px;
 }
 .floating-card--count{
@@ -358,6 +366,43 @@ a{ text-decoration: none; }
   .floating-card--week{ left: -6%; width: 128px; }
   .floating-card--count{ right: -4%; }
 }
+
+/* =========================================================
+   TIRA DE CATEGORÍAS
+   ========================================================= */
+.cat-strip{ padding: 22px 0 6px; background: var(--bg); }
+.cat-strip__row{
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 10px;
+  scrollbar-width: thin;
+  justify-content: flex-start;
+}
+@media (min-width: 768px){
+  .cat-strip__row{ justify-content: center; }
+}
+.cat-chip{
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 84px;
+  text-align: center;
+}
+.cat-chip__img{
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--white);
+  box-shadow: var(--shadow-card);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.cat-chip__img img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.cat-chip:hover .cat-chip__img{ transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+.cat-chip__label{ font-size: .74rem; font-weight: 700; color: var(--primary-dark); }
 
 /* =========================================================
    SECCIONES GENERALES
@@ -435,6 +480,70 @@ a{ text-decoration: none; }
 .feature-card h3{ font-size: 1.05rem; margin-bottom: 6px; }
 .feature-card p{ font-size: .88rem; margin: 0; }
 
+/* =========================================================
+   GALERÍA DE RECETAS
+   ========================================================= */
+.gallery-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 32px;
+}
+@media (min-width: 576px){ .gallery-grid{ grid-template-columns: repeat(3, 1fr); gap: 14px; } }
+@media (min-width: 992px){ .gallery-grid{ grid-template-columns: repeat(4, 1fr); gap: 16px; } }
+
+.gallery-item{
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  box-shadow: var(--shadow-card);
+  margin: 0;
+}
+.gallery-item img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s ease;
+}
+.gallery-item:hover img{ transform: scale(1.06); }
+.gallery-item figcaption{
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 22px 12px 10px;
+  background: linear-gradient(180deg, transparent, rgba(15,26,20,.86));
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .78rem;
+  line-height: 1.25;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.gallery-item__cat{
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: .6rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--accent);
+}
+.gallery-note{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  max-width: 52ch;
+  margin: 28px auto 0;
+  font-weight: 600;
+  font-size: .9rem;
+  color: var(--text);
+}
+.gallery-note i{ color: var(--primary); flex: 0 0 auto; }
+
 /* Cómo funciona */
 .steps{
   display: grid;
@@ -498,22 +607,35 @@ a{ text-decoration: none; }
 }
 @media (min-width: 576px){ .testi-card{ flex-basis: 46%; } }
 @media (min-width: 992px){ .testi-card{ flex-basis: 30%; } }
-.testi-card__ph{
-  aspect-ratio: 3/4;
-  border: 2px dashed #c7dccd;
+.testi-card__photo{
+  position: relative;
   border-radius: var(--radius-md);
+  overflow: hidden;
   background: var(--white);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  color: var(--text-soft);
-  font-size: .82rem;
-  text-align: center;
-  padding: 20px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
 }
-.testi-card__ph i{ font-size: 1.8rem; color: #25D366; }
+.testi-card__photo img{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.testi-card__verified{
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(22, 38, 30, .78);
+  color: var(--white);
+  font-size: .68rem;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(2px);
+}
+.testi-card__verified i{ color: #4ADE80; }
 .testi-arrow{
   flex: 0 0 auto;
   width: 38px; height: 38px;
